@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Happy Birthday Sajjan 💙</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg,#E8F7FC,#C3E2F4,#76BCE5,#2997D6,#366CB3,#1266E3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Papyrus', fantasy, cursive;
+    position: relative;
+}
+
+/* FLOATING EMOJIS CONTAINER */
+#emojiContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* FLOATING EMOJIS */
+.emoji {
+    position: absolute;
+    animation: floatMove linear infinite;
+    opacity: 0.5;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes floatMove { 
+    0% { transform: translateY(0px) rotate(0deg); } 
+    100% { transform: translateY(-200px) rotate(10deg); } 
+}
+
+/* TEXT */
+.text, .nextText {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    z-index: 2;
+}
+
+.text span {
+    font-size: 70px;
+    font-weight: bold;
+    color: #244CA3;
+    margin: 0 4px;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: floatIn 0.5s forwards;
+}
+
+.nextText span {
+    font-size: 35px;
+    font-weight: bold;
+    color: #244CA3;
+    margin: 0 4px;
+}
+
+.space { width: 30px; }
+
+@keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
+
+/* SLIDE */
+.slide-out { animation: slideOut 3.5s forwards; }
+@keyframes slideOut { to { transform: translateX(120vw); opacity: 0; } }
+
+.nextText { transform: translateX(-120vw); }
+.slide-in { animation: slideIn 3.5s forwards; }
+@keyframes slideIn { to { transform: translateX(0); } }
+
+/* PICK TEXT */
+.pickText { position: absolute; top: 60%; font-size: 22px; color: #244CA3; opacity: 0; transition: 1s; z-index:2; }
+
+/* BUTTONS */
+.choices {
+    position: absolute;
+    top: 68%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    transition: 1s;
+    z-index:2;
+}
+
+.choices button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    background: #244CA3;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Papyrus', fantasy;
+}
+.choices button:hover { transform: scale(1.1); background: #1266E3; }
+.show-choices { opacity: 1; }
+
+/* LETTER SCREEN */
+.letterScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 2;
+    background: transparent !important;
+}
+
+/* ENVELOPE */
+.envelope {
+    width: 350px;
+    height: 200px;
+    background: #f5e6c8;
+    position: absolute;
+    bottom: -300px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    color: #5a4634;
+    font-weight: bold;
+    flex-direction: column;
+    padding-bottom: 15px;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.envelope.show {
+    animation: riseUp 3s forwards;
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes riseUp { 
+    from { bottom: -300px; opacity: 0; }
+    to { bottom: 35%; opacity: 1; } 
+}
+
+/* FLAP */
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #e6d3a3;
+    clip-path: polygon(0 0, 50% 60%, 100% 0);
+    transform-origin: top;
+    transition: 0.6s;
+    z-index: 2;
+}
+
+.open .flap { transform: rotateX(180deg); }
+
+.envelope span { z-index: 3; }
+
+/* LETTER */
+.letter {
+    position: relative;
+    width: 80%;
+    max-width: 900px;
+    height: 80%;
+    background: white;
+    color: #244CA3;
+    padding: 30px;
+    border-radius: 10px;
+    overflow-y: auto;
+    display: none;
+    text-align: left;
+    box-shadow: 0 0 25px rgba(0,0,0,0.3);
+    z-index: 15;
+    white-space: pre-wrap;
+    font-family: "Papyrus", fantasy;
+    font-size: 18px;
+}
+
+/* TYPEWRITER CURSOR */
+#typewriter::after {
+    content: '|';
+    animation: blink 0.8s infinite;
+}
+@keyframes blink { 0%,50%,100% { opacity:1; } 25%,75% { opacity:0; } }
+
+/* Surprise Button inside letter */
+.letter-surprise-btn {
+    display: block;
+    margin: 30px auto 20px auto;
+    padding: 12px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    background: #244CA3;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Papyrus', fantasy;
+    text-align: center;
+}
+
+.letter-surprise-btn:hover {
+    transform: scale(1.05);
+    background: #1266E3;
+}
+
+/* FINAL SURPRISE - centered */
+.finalSurprise {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 20px;
+    background: transparent !important;
+    flex-direction: column;
+}
+
+/* Photo Row container */
+.photo-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 0 40px;
+    margin: 0 auto;
+    flex-wrap: nowrap;
+    z-index: 10;
+    position: relative;
+    height: auto;
+    transition: all 0.5s ease;
+}
+
+/* Play Music Button */
+.play-music-btn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #244CA3, #1266E3);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Papyrus', fantasy;
+    z-index: 25;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+}
+
+.play-music-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    background: linear-gradient(135deg, #1266E3, #244CA3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+}
+
+/* Final Large Polaroid with Video */
+.final-polaroid-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 30;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
+    padding: 20px;
+}
+
+.final-polaroid {
+    width: 450px;
+    max-width: 90vw;
+    background: white;
+    padding: 15px 15px 30px 15px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    border-radius: 15px;
+    text-align: center;
+    animation: zoomIn 0.6s ease;
+    transform: scale(0);
+    animation: zoomIn 0.6s ease forwards;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.final-polaroid video {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    margin-bottom: 15px;
+    max-height: 490px;
+    object-fit: cover;
+}
+
+.final-lyrics-section {
+    font-family: 'Papyrus', fantasy, cursive;
+    font-size: 16px;
+    color: #2c3e66;
+    background: #fef7e0;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 500;
+    border-top: 2px solid #ffd966;
+    min-height: 80px;
+}
+
+.final-lyrics-text {
+    line-height: 1.4;
+    white-space: pre-line;
+    word-break: break-word;
+    font-size: 16px;
+}
+
+/* POLAROIDS */
+.polaroid {
+    width: 220px;
+    background: white;
+    padding: 10px 10px 30px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    transform: scale(0);
+    opacity: 0;
+    text-align: center;
+    flex-shrink: 0;
+    z-index: 15;
+    position: relative;
+    transition: all 2s ease;
+}
+
+.polaroid img {
+    width: 100%;
+    border-radius: 5px;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+/* Zoom effect for entire polaroid when lyrics appear */
+.polaroid.zoom-effect {
+    transform: scale(1.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    transition: all 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+    z-index: 20;
+}
+
+/* Lyrics section */
+.lyrics-section {
+    font-family: 'Papyrus', fantasy, cursive;
+    font-size: 16px;
+    color: #2c3e66;
+    background: white;
+    padding: 8px 5px 5px 5px;
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 500;
+    border-top: 1px solid #ffd966;
+    min-height: 80px;
+}
+
+.lyrics-text {
+    line-height: 1.3;
+    white-space: pre-line;
+    word-break: break-word;
+    font-size: 20px;
+}
+
+.showPolaroid {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .photo-row {
+        gap: 20px;
+        padding: 0 30px;
+    }
+    .polaroid {
+        width: 200px;
+        padding: 8px 8px 25px;
+    }
+    .final-polaroid {
+        width: 400px;
+    }
+    .final-polaroid video {
+        max-height: 350px;
+    }
+}
+
+@media (max-width: 600px) {
+    .photo-row {
+        gap: 15px;
+        padding: 0 20px;
+    }
+    .polaroid {
+        width: 180px;
+    }
+    .final-polaroid {
+        width: 320px;
+    }
+    .final-lyrics-text {
+        font-size: 14px;
+    }
+    .final-polaroid video {
+        max-height: 280px;
+    }
+}
+
+.finalSurprise::-webkit-scrollbar {
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+}
+.finalSurprise::-webkit-scrollbar-thumb {
+    background: #244CA3;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="emojiContainer"></div>
+
+<div class="text" id="text"></div>
+<div class="nextText" id="nextText"></div>
+<div class="pickText" id="pickText">PICK ONE</div>
+
+<div class="choices" id="choices">
+    <button id="letterBtn">💌 Letter</button>
+    <button id="surpriseBtn">📷 Photo Album</button>
+</div>
+
+<!-- LETTER SECTION -->
+<div class="letterScreen" id="letterScreen">
+    <div class="envelope" id="envelope">
+        <span> Click here!! </span>
+        <div class="flap"></div>
+    </div>
+
+    <div class="letter" id="letter">
+        <div id="typewriter"></div>
+        <button class="letter-surprise-btn" id="toSurpriseBtn" style="display: none;">🪄 Open the Album 🪄</button>
+    </div>
+</div>
+
+<!-- SURPRISE SECTION -->
+<div class="finalSurprise" id="finalSurprise">
+    <div class="photo-row" id="photoRow"></div>
+    <button class="play-music-btn" id="playMusicBtn">🎵 Play Music 🎵</button>
+</div>
+
+<!-- Final Large Polaroid Container with VIDEO -->
+<div class="final-polaroid-container" id="finalPolaroidContainer">
+    <div class="final-polaroid">
+        <video id="finalVideo" autoplay loop muted playsinline>
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="final-lyrics-section">
+            <div class="final-lyrics-text" id="finalLyricsText"></div>
+        </div>
+    </div>
+</div>
+
+<audio id="bgMusic" preload="auto"></audio>
+
+<script>
+// -------------------------------
+// 1. TEXT ANIMATIONS
+// -------------------------------
+const message = "HAPPY BIRTHDAYY SAJJAN!!";
+const nextMessage = "A LITTLE SOMETHING TO START WITH..";
+
+const container = document.getElementById("text");
+const nextContainer = document.getElementById("nextText");
+const choicesDiv = document.getElementById("choices");
+const pickText = document.getElementById("pickText");
+const emojiContainer = document.getElementById("emojiContainer");
+
+/* EMOJIS floating */
+const symbols=["★","☆","✿","✧","♡","🧿"];
+const colors=["#FAFFFF","#1A83E6","#59CCF0","#1219E3"];
+for(let i=0;i<80;i++){
+    const emoji=document.createElement("div");
+    emoji.className="emoji";
+    emoji.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    emoji.style.color=colors[Math.floor(Math.random()*colors.length)];
+    emoji.style.left=Math.random()*100+"vw";
+    emoji.style.top=Math.random()*100+"vh";
+    emoji.style.fontSize=(15+Math.random()*35)+"px";
+    emoji.style.animationDuration=(6+Math.random()*10)+"s";
+    emoji.style.animationDelay=Math.random()*8+"s";
+    emoji.style.opacity=0.3 + Math.random()*0.5;
+    emojiContainer.appendChild(emoji);
+}
+
+// Continuously add new emojis
+setInterval(() => {
+    if (emojiContainer.children.length < 100) {
+        const emoji = document.createElement("div");
+        emoji.className = "emoji";
+        emoji.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        emoji.style.color = colors[Math.floor(Math.random() * colors.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.top = 100 + "vh";
+        emoji.style.fontSize = (15 + Math.random() * 35) + "px";
+        emoji.style.animationDuration = (6 + Math.random() * 10) + "s";
+        emoji.style.opacity = 0.3 + Math.random() * 0.5;
+        emojiContainer.appendChild(emoji);
+        
+        setTimeout(() => {
+            if (emoji.parentNode) emoji.remove();
+        }, 15000);
+    }
+}, 2000);
+
+/* Animated main text */
+message.split("").forEach((char,index)=>{
+    if(char===" ") { 
+        const space=document.createElement("div"); 
+        space.className="space"; 
+        container.appendChild(space);
+    } else { 
+        const span=document.createElement("span"); 
+        span.textContent=char; 
+        span.style.animationDelay=index*0.1+"s"; 
+        container.appendChild(span);
+    }
+});
+
+nextMessage.split("").forEach((char)=>{
+    if(char===" ") { 
+        const space=document.createElement("div"); 
+        space.className="space"; 
+        nextContainer.appendChild(space);
+    } else { 
+        const span=document.createElement("span"); 
+        span.textContent=char; 
+        nextContainer.appendChild(span);
+    }
+});
+
+setTimeout(()=>{ container.classList.add("slide-out"); nextContainer.classList.add("slide-in"); },6000);
+setTimeout(()=>{ pickText.style.opacity=1; choicesDiv.classList.add("show-choices"); },8000);
+
+// -------------------------------
+// 2. LETTER FUNCTIONALITY
+// -------------------------------
+const letterBtn=document.getElementById("letterBtn");
+const letterScreen=document.getElementById("letterScreen");
+const envelopeDiv = document.getElementById("envelope");
+const letter=document.getElementById("letter");
+const typewriterDiv=document.getElementById("typewriter");
+
+const letterContent = `Happyy Birthdayy to my Dhapuda💙
+
+I don't even know where to begin, because there's so much I feel for you. But today is all about YOU — the person who is a blessing to me.
+
+As I've mentioned before, you are my peace. And by peace, I mean whenever I'm with you, I forget all my worries and just want to stay with you. It's all about your energy. Every little moment with you means more than I can ever put into words.
+You have a version of me that no one has ever reached...not even me!
+
+I still remember that walk after the movie, jab we held hands for the first time. The way i was so happy while returning home, Sachin uncle saw me and thought ki mujhe koi lottery lag gaya ho. Ab unhe kon bataye ki Tina ne toh jackpot jeet liya — You being my ultimate jackpot!! 
+
+And Oh My God, Sajjan, you turned 21 today — fuckingg 21! You're so old, bhaii😭.But DW, even if you're this old, I still love you, okay? Just tell me whenever you have a backache or joint pain, I'll take care of you😉.
+
+You being in my life is like getting all the desserts in the world and still wanting more of you [ In general bhi aur vese bhi🤭].
+I'm grateful to Mahadev ji for bringing you into my life. Atp, you are my favorite person on this earth.
+
+I hope this year brings you everything you've been wishing for — success, happiness, peace, and all the love you deserve (with me, obviously ). I love you more than you know.
+
+Once again, HAPPY BIRTHDAY SAJJU🧿`;
+
+letterBtn.onclick=()=>{ 
+    letterScreen.style.display="flex";
+    envelopeDiv.classList.add("show");
+    choicesDiv.style.opacity = "0";
+    nextContainer.style.display = "none";
+    pickText.style.display = "none";
+};
+
+envelopeDiv.onclick=()=>{
+    envelopeDiv.classList.add("open");
+    letter.style.display="block";
+    
+    const surpriseButton = document.getElementById("toSurpriseBtn");
+    typewriterDiv.innerHTML = "";
+    let idx = 0;
+    
+    function typeWriter(){
+        if(idx < letterContent.length){
+            if(letterContent.charAt(idx) === '\n'){
+                typewriterDiv.innerHTML += '<br>';
+            } else {
+                typewriterDiv.innerHTML += letterContent.charAt(idx);
+            }
+            idx++;
+            setTimeout(typeWriter, 50);
+        } else {
+            surpriseButton.style.display = "block";
+        }
+    }
+    typeWriter();
+};
+
+const toSurpriseBtn = document.getElementById("toSurpriseBtn");
+
+// -------------------------------
+// 3. SURPRISE SECTION - SIMPLE TIMING
+// -------------------------------
+const surpriseBtn = document.getElementById("surpriseBtn");
+const finalSurpriseDiv = document.getElementById("finalSurprise");
+const photoRowContainer = document.getElementById("photoRow");
+const playMusicBtn = document.getElementById("playMusicBtn");
+const finalPolaroidContainer = document.getElementById("finalPolaroidContainer");
+const finalVideo = document.getElementById("finalVideo");
+const finalLyricsText = document.getElementById("finalLyricsText");
+const musicPlayer = document.getElementById("bgMusic");
+
+const photos = [
+    "photo1.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo2.jpg",
+    "photo6.jpg"
+];
+
+const lyricsList = [
+    "How could this be anything, anything else, when 💭",
+    "All I dream of is your eyes👀",
+    "All I long for is your touch💗",
+    "And, darling, something tells me it's enough,mm🫶",
+    "You can say that I'm a fool and i don't know very much🥰"
+];
+
+const finalSongLyrics = "But I think they call this love...\n\n ❤️❤️❤️";
+
+let polaroidElements = [];
+let musicStarted = false;
+
+function addZoomEffect(polaroid) {
+    polaroid.classList.add('zoom-effect');
+}
+
+function removeZoomEffect(polaroid) {
+    polaroid.classList.remove('zoom-effect');
+}
+
+function typeLyricsOnPolaroid(element, text, polaroid, callback) {
+    addZoomEffect(polaroid);
+    element.innerHTML = "";
+    let charPos = 0;
+    
+    function addCharacter() {
+        if (charPos < text.length) {
+            element.innerHTML += text.charAt(charPos);
+            charPos++;
+            setTimeout(addCharacter, 55);
+        } else {
+            setTimeout(() => {
+                removeZoomEffect(polaroid);
+                if (callback) callback();
+            }, 500);
+        }
+    }
+    addCharacter();
+}
+
+function typeFinalLyrics() {
+    finalLyricsText.innerHTML = "";
+    let charPos = 0;
+    const fullText = finalSongLyrics;
+    
+    function addCharacter() {
+        if (charPos < fullText.length) {
+            finalLyricsText.innerHTML += fullText.charAt(charPos);
+            charPos++;
+            setTimeout(addCharacter, 60);
+        }
+    }
+    addCharacter();
+}
+
+// Start the lyric journey when play button is clicked
+playMusicBtn.onclick = () => {
+    if (musicStarted) return;
+    musicStarted = true;
+    
+    playMusicBtn.style.display = "none";
+    
+    // Start playing music
+    musicPlayer.src = "audio.mpeg";
+    musicPlayer.play().catch(err => console.log("Audio play needs interaction:", err));
+    
+    // Schedule each polaroid at exact times (in milliseconds)
+    // Based on your timings from 0:28 to 0:55
+    // 0:28 = start (0ms), 0:34 = 6000ms, 0:38 = 10000ms, 0:41 = 13000ms, 0:48 = 20000ms, 0:55 = 27000ms
+    
+    // Polaroid 1: starts at 0 seconds (0:28)
+    setTimeout(() => {
+        const polaroid = polaroidElements[0];
+        const lyricsDiv = polaroid.querySelector('.lyrics-text');
+        typeLyricsOnPolaroid(lyricsDiv, lyricsList[0], polaroid, () => {});
+    }, 0);
+    
+    // Polaroid 2: starts at 6 seconds (0:34)
+    setTimeout(() => {
+        const polaroid = polaroidElements[1];
+        const lyricsDiv = polaroid.querySelector('.lyrics-text');
+        typeLyricsOnPolaroid(lyricsDiv, lyricsList[1], polaroid, () => {});
+    }, 6000);
+    
+    // Polaroid 3: starts at 10 seconds (0:38)
+    setTimeout(() => {
+        const polaroid = polaroidElements[2];
+        const lyricsDiv = polaroid.querySelector('.lyrics-text');
+        typeLyricsOnPolaroid(lyricsDiv, lyricsList[2], polaroid, () => {});
+    }, 10000);
+    
+    // Polaroid 4: starts at 13 seconds (0:41)
+    setTimeout(() => {
+        const polaroid = polaroidElements[3];
+        const lyricsDiv = polaroid.querySelector('.lyrics-text');
+        typeLyricsOnPolaroid(lyricsDiv, lyricsList[3], polaroid, () => {});
+    }, 13000);
+    
+    // Polaroid 5: starts at 20 seconds (0:48)
+    setTimeout(() => {
+        const polaroid = polaroidElements[4];
+        const lyricsDiv = polaroid.querySelector('.lyrics-text');
+        typeLyricsOnPolaroid(lyricsDiv, lyricsList[4], polaroid, () => {});
+    }, 20000);
+    
+    // Final Video Polaroid: starts at 27 seconds (0:55)
+    setTimeout(() => {
+        showVideoPolaroid();
+    }, 27000);
+};
+
+function showVideoPolaroid() {
+    finalPolaroidContainer.style.display = "flex";
+    finalVideo.play();
+    typeFinalLyrics();
+    
+    finalPolaroidContainer.onclick = () => {
+        finalPolaroidContainer.style.display = "none";
+    };
+}
+
+function createPolaroids() {
+    photoRowContainer.innerHTML = "";
+    polaroidElements = [];
+    musicStarted = false;
+    playMusicBtn.style.display = "none";
+    
+    photos.forEach((src, idx) => {
+        const polaroidDiv = document.createElement("div");
+        polaroidDiv.className = "polaroid";
+        
+        const imgElement = document.createElement("img");
+        imgElement.src = src;
+        imgElement.alt = `Birthday memory ${idx+1}`;
+        imgElement.style.width = "100%";
+        imgElement.style.borderRadius = "5px";
+        
+        imgElement.onerror = () => {
+            imgElement.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ffe0f0'/%3E%3Ctext x='50%25' y='50%25' font-size='14' fill='%23b33b6e' text-anchor='middle' dy='.3em'%3E💙%3C/text%3E%3C/svg%3E";
+            imgElement.style.objectFit = "cover";
+        };
+        
+        const lyricsContainer = document.createElement("div");
+        lyricsContainer.className = "lyrics-section";
+        const lyricsTextSpan = document.createElement("div");
+        lyricsTextSpan.className = "lyrics-text";
+        lyricsTextSpan.innerHTML = "🎵 ♪ ♫ 🎵";
+        lyricsContainer.appendChild(lyricsTextSpan);
+        
+        polaroidDiv.appendChild(imgElement);
+        polaroidDiv.appendChild(lyricsContainer);
+        photoRowContainer.appendChild(polaroidDiv);
+        polaroidElements.push(polaroidDiv);
+        
+        setTimeout(() => {
+            polaroidDiv.classList.add("showPolaroid");
+            if (idx === photos.length - 1) {
+                setTimeout(() => {
+                    playMusicBtn.style.display = "block";
+                }, 1000);
+            }
+        }, idx * 500);
+    });
+}
+
+function showSurpriseScreen() {
+    container.style.display = "none";
+    nextContainer.style.display = "none";
+    choicesDiv.style.display = "none";
+    pickText.style.display = "none";
+    letterScreen.style.display = "none";
+    
+    finalSurpriseDiv.style.display = "flex";
+    finalSurpriseDiv.style.justifyContent = "center";
+    finalSurpriseDiv.style.alignItems = "center";
+    
+    createPolaroids();
+    finalSurpriseDiv.scrollLeft = 0;
+}
+
+surpriseBtn.onclick = () => {
+    showSurpriseScreen();
+};
+
+toSurpriseBtn.onclick = () => {
+    showSurpriseScreen();
+};
+
+window.addEventListener('load', () => {
+    console.log("Birthday surprise ready! 🎂");
+});
+</script>
+</body>
+</html>
